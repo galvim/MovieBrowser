@@ -12,6 +12,9 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -31,5 +34,10 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.annimon:stream:1.1.6'
+    compile 'com.android.support:design:25.1.1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'info.android15.nucleus:nucleus-support-v7:4.0.0'
+    compile 'info.android15.nucleus:nucleus:4.0.0'
+    compile 'com.google.code.gson:gson:2.8.0'
     testCompile 'junit:junit:4.12'
 }
