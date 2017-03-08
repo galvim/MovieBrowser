@@ -2,21 +2,19 @@ package com.example.rent.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.annimon.stream.Stream;
-import com.annimon.stream.function.Consumer;
-
-import java.io.IOException;
-
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import nucleus.factory.RequiresPresenter;
 import nucleus.view.NucleusAppCompatActivity;
+
+import static io.reactivex.android.schedulers.AndroidSchedulers.*;
+import static io.reactivex.schedulers.Schedulers.io;
 
 @RequiresPresenter(ListingPresenter.class)
 public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> {
@@ -38,22 +36,33 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
         viewFlipper = (ViewFlipper) findViewById(R.id.view_flipper);
         noInternet = (TextView) findViewById(R.id.text_no_internet);
 
-        getPresenter().getDataAsync(title);
+        getPresenter().getDataAsync(title)
+                .subscribeOn(io())
+                .observeOn(mainThread())
+                .subscribe(this::success,this::error);
     }
 
-    public void setDataOnUiThread(SearchResult result, boolean isProblemWithInternet) {
+    private void error(Throwable throwable) {
+        viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(noInternet));
+    }
+
+    private void success(SearchResult searchResult) {
+        viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(recyclerView));
+        adapter.setItems(searchResult.getItems());
+    }
+
+    /*public void setDataOnUiThread(SearchResult result, boolean isProblemWithInternet) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if(isProblemWithInternet) {
-                    viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(noInternet));
+                    error(throwable);
                 } else {
-                    viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(recyclerView));
-                    adapter.setItems(result.getItems());
+                    success(result);
                 }
             }
         });
-    }
+    }*/
 
 
     public static Intent createIntent(Context context, String title) {
