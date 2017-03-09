@@ -33,5 +33,13 @@
             android:text="NO INTERNET !!!"
             android:textSize="36sp"
             android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/results_imageView"
+            android:layout_gravity="center"
+            android:src="@drawable/nofound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </ViewFlipper>
 </RelativeLayout>
