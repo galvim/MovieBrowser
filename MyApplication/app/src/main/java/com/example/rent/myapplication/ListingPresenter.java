@@ -1,24 +1,30 @@
 package com.example.rent.myapplication;
 
-import com.google.gson.Gson;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.List;
 
 import io.reactivex.Observable;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import nucleus.presenter.Presenter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-/**
- * Created by RENT on 2017-03-07.
- */
 
-public class ListingPresenter extends Presenter<ListingActivity> {
+
+
+public class ListingPresenter extends Presenter<ListingActivity> implements  OnLoadNextPageListener{
+    private List<MovieListingItem> allResults;
     private Retrofit retrofit;
+    private String title;
+    private String stringYear;
+    private String type;
+
+    public void setRetrofit(Retrofit retrofit) {
+        this.retrofit = retrofit;
+    }
 
     public ListingPresenter() {
         retrofit = new Retrofit.Builder()
@@ -28,13 +34,27 @@ public class ListingPresenter extends Presenter<ListingActivity> {
                 .build();
     }
 
-    public Observable<SearchResult> getDataAsync(String title, int year, String type) {
+    public Observable<SearchResult> getDataAsync(int page,String title, int year, String type) {
+        this.title = title;
 
+        this.type = type;
 
-        String stringYear = year == ListingActivity.NO_YEAR_SELECTED ? null : String.valueOf(year);
+        stringYear = year == ListingActivity.NO_YEAR_SELECTED ? null : String.valueOf(year);
+        return retrofit.create(SearchService.class).search(page, title, stringYear, type);
+    }
 
+    @Override
+    public void loadNextPage(int page) {
+        retrofit.create(SearchService.class).search(page ,title,stringYear,type)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                searchResult -> {
+        getView().appendItems(searchResult);
+        },throwable -> {
+                            //nop
+                        });
 
-        return retrofit.create(SearchService.class).search(title, stringYear, type);
     }
 }
 

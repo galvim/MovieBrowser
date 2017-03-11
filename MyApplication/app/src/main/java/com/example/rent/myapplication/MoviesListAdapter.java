@@ -45,6 +45,11 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.My
         holder.type.setText("typ :" + movieListingItem.getType());
     }
 
+    public void addItems(List<MovieListingItem> items) {
+        this.items.addAll(items);
+        notifyDataSetChanged();
+    }
+
     class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView poster;
         TextView titleAndYear;

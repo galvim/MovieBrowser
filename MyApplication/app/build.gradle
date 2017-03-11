@@ -50,5 +50,6 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.azoft.carousellayoutmanager:carousel:1.2.1'
     testCompile 'junit:junit:4.12'
 }

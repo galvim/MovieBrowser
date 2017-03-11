@@ -4,9 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-/**
- * Created by RENT on 2017-03-07.
- */
 
 public class SearchResult {
     @SerializedName("Search")
@@ -25,5 +22,13 @@ public class SearchResult {
 
     public String getTotalResults() {
         return totalResults;
+    }
+
+    public void setItems(List<MovieListingItem> items) {
+        this.items = items;
+    }
+
+    public void setTotalResults(String totalResults) {
+        this.totalResults = totalResults;
     }
 }
