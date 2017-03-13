@@ -7,29 +7,98 @@
     android:layout_height="match_parent"
     tools:context="com.example.rent.myapplication.SearchActivity">
 
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/poster_header"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
+
     <android.support.design.widget.TextInputLayout
-        android:layout_toLeftOf="@+id/search_button"
-        android:layout_marginTop="16dp"
+        android:layout_below="@+id/poster_header"
         android:id="@+id/text_input_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_toLeftOf="@+id/search_button">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/text_input_edit"
-            android:hint="@string/what_are_you_looking_for"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="@string/what_are_you_looking_for" />
     </android.support.design.widget.TextInputLayout>
 
-        <ImageButton
-            android:layout_margin="4dp"
-            android:layout_marginTop="26dp"
-            android:id="@+id/search_button"
-            android:layout_alignParentRight="true"
-            app:srcCompat="@drawable/search_ic"
+    <ImageButton
+        android:layout_below="@id/poster_header"
+        android:id="@+id/search_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="4dp"
+        android:layout_marginTop="26dp"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/search_ic" />
+
+    <CheckBox
+        android:id="@+id/checkbox_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_input_layout"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Z roku :" />
+
+    <NumberPicker
+        android:id="@+id/number_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkbox_year"
+        android:layout_marginLeft="26dp"
+        android:visibility="gone" />
+
+    <CheckBox
+        android:id="@+id/type_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/text_input_layout"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:text="typu :" />
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/type_checkbox"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp">
+
+        <RadioButton
+            android:text="Filmy"
+            android:id="@+id/movies_radio"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:text="Seriale"
+            android:id="@+id/TvSeries_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:text="Gry"
+            android:id="@+id/games_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:text="Odcinki"
+            android:id="@+id/episodes_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RadioGroup>
 
 
 </RelativeLayout>
