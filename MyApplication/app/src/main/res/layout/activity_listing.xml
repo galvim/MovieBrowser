@@ -19,11 +19,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="LinearLayoutManager" />
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="LinearLayoutManager" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <TextView
             android:id="@+id/text_no_internet"
@@ -35,12 +41,12 @@
             android:textStyle="bold" />
 
 
-            <ImageView
-                android:id="@+id/results_imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/nofound" />
+        <ImageView
+            android:id="@+id/results_imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/nofound" />
 
 
     </ViewFlipper>

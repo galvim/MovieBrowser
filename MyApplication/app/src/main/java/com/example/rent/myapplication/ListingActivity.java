@@ -6,6 +6,7 @@ import static io.reactivex.schedulers.Schedulers.io;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.ViewFlipper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import nucleus.factory.RequiresPresenter;
 import nucleus.view.NucleusAppCompatActivity;
@@ -46,6 +48,9 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
     @BindView(R.id.counter)
     TextView counter;
 
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +77,19 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
         endlessScrollListener.setCurrentItemListener(this);
         endlessScrollListener.setShoworHideCounter(this);
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+              startLoading(title,year,type);
+            }
+        });
 
+
+        startLoading(title, year, type);
+
+    }
+
+    private void startLoading(String title, int year, String type) {
         getPresenter().getDataAsync(1, title, year, type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(mainThread())
@@ -86,6 +103,7 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
     }
 
     private void error(Throwable throwable) {
+        swipeRefreshLayout.setRefreshing(false);
         viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(noInternet));
     }
 
@@ -96,11 +114,12 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
     }
 
     private void success(SearchResult searchResult) {
+        swipeRefreshLayout.setRefreshing(false);
         endlessScrollListener.setTotalItemsNumber(Integer.parseInt(searchResult.getTotalResults()));
         if ("False".equalsIgnoreCase(searchResult.getResposne())) {
             viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(no_results));
         } else {
-            viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(recyclerView));
+            viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(swipeRefreshLayout));
             adapter.setItems(searchResult.getItems());
         }
     }
