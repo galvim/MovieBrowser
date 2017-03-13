@@ -1,9 +1,6 @@
-package com.example.rent.myapplication;
+package com.example.rent.myapplication.listing;
 
-import android.content.Context;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.rent.myapplication.R;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +16,11 @@ import java.util.List;
 public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.MyViewHolder> {
 
     private List<MovieListingItem> items = Collections.emptyList();
+    private OnMovieItemClickListener onMovieItemClickListener;
+
+    public void setOnMovieItemClickListener(OnMovieItemClickListener onMovieItemClickListener) {
+        this.onMovieItemClickListener = onMovieItemClickListener;
+    }
 
     public void setItems(List<MovieListingItem> items) {
         this.items = items;
@@ -43,6 +46,12 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.My
         Glide.with(holder.poster.getContext()).load(movieListingItem.getPoster()).into(holder.poster);
         holder.titleAndYear.setText(movieListingItem.getTitle() + " (" + movieListingItem.getYear() + ")");
         holder.type.setText("typ :" + movieListingItem.getType());
+        holder.itemView.setOnClickListener(v -> {
+            if(onMovieItemClickListener !=null) {
+                onMovieItemClickListener.onMovieItemClick(movieListingItem.getImdbID());
+            }
+
+        });
     }
 
     public void addItems(List<MovieListingItem> items) {
@@ -54,10 +63,11 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.My
         ImageView poster;
         TextView titleAndYear;
         TextView type;
+        View itemView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-
+            this.itemView=itemView;
             poster = (ImageView) itemView.findViewById(R.id.poster);
             titleAndYear = (TextView) itemView.findViewById(R.id.title_and_year);
             type = (TextView) itemView.findViewById(R.id.type);

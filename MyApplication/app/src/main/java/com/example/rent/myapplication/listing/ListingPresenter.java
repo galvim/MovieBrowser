@@ -1,11 +1,13 @@
-package com.example.rent.myapplication;
+package com.example.rent.myapplication.listing;
 
+
+import com.example.rent.myapplication.search.SearchResult;
+import com.example.rent.myapplication.search.SearchService;
 
 import java.util.List;
 
 import io.reactivex.Observable;
 
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import nucleus.presenter.Presenter;
@@ -34,7 +36,7 @@ public class ListingPresenter extends Presenter<ListingActivity> implements  OnL
                 .build();
     }
 
-    public Observable<SearchResult> getDataAsync(int page,String title, int year, String type) {
+    public Observable<SearchResult> getDataAsync(int page, String title, int year, String type) {
         this.title = title;
 
         this.type = type;

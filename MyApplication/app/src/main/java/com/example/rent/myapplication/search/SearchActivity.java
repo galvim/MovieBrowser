@@ -1,12 +1,10 @@
-package com.example.rent.myapplication;
+package com.example.rent.myapplication.search;
 
-import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -16,6 +14,10 @@ import android.widget.RadioGroup;
 import com.azoft.carousellayoutmanager.CarouselLayoutManager;
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener;
 import com.azoft.carousellayoutmanager.CenterScrollListener;
+import com.example.rent.myapplication.listing.ListingActivity;
+import com.example.rent.myapplication.listing.MovieListingItem;
+import com.example.rent.myapplication.R;
+import com.example.rent.myapplication.RetrofitProvider;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -28,7 +30,6 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 

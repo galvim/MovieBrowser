@@ -1,4 +1,4 @@
-package com.example.rent.myapplication;
+package com.example.rent.myapplication.listing;
 
 /**
  * Created by RENT on 2017-03-11.

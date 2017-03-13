@@ -1,7 +1,6 @@
-package com.example.rent.myapplication;
+package com.example.rent.myapplication.listing;
 
 import static io.reactivex.android.schedulers.AndroidSchedulers.mainThread;
-import static io.reactivex.schedulers.Schedulers.io;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,23 +9,25 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 
+import com.example.rent.myapplication.R;
+import com.example.rent.myapplication.detail.DetailActivity;
+import com.example.rent.myapplication.search.SearchResult;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import nucleus.factory.RequiresPresenter;
 import nucleus.view.NucleusAppCompatActivity;
 
 @RequiresPresenter(ListingPresenter.class)
-public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> implements CurrentItemListener,ShoworHideCounter {
+public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> implements CurrentItemListener,ShoworHideCounter, OnMovieItemClickListener {
 
     private static final String SEARCH_TITLE = "search_title";
     private static final String SEARCH_YEAR = "search_year";
@@ -69,6 +70,8 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
         recyclerView.setAdapter(adapter);
         /*viewFlipper = (ViewFlipper) findViewById(R.id.view_flipper);
         noInternet = (TextView) findViewById(R.id.text_no_internet);*/
+
+        adapter.setOnMovieItemClickListener(this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -163,6 +166,10 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
     @Override
     public void hideCounter() {
         counter.animate().translationX(counter.getWidth()*2).start();
+    }
 
+    @Override
+    public void onMovieItemClick(String imdbID){
+        startActivity(DetailActivity.createIntent(this,imdbID));
     }
 }

@@ -1,4 +1,4 @@
-package com.example.rent.myapplication;
+package com.example.rent.myapplication.listing;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
