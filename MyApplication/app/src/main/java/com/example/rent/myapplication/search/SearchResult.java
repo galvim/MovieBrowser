@@ -11,14 +11,14 @@ public class SearchResult {
     private List<MovieListingItem> items;
     private String totalResults;
     @SerializedName("Response")
-    private String resposne;
+    private String response;
 
     public List<MovieListingItem> getItems() {
         return items;
     }
 
     public String getResposne() {
-        return resposne;
+        return response;
     }
 
     public String getTotalResults() {

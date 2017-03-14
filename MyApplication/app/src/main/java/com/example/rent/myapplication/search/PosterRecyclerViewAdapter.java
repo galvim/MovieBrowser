@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.rent.myapplication.R;
+import com.example.rent.myapplication.listing.OnMovieItemClickListener;
 
 
 import java.util.Collections;
@@ -17,7 +18,12 @@ import static butterknife.ButterKnife.findById;
 
 public class PosterRecyclerViewAdapter extends RecyclerView.Adapter<PosterRecyclerViewAdapter.ViewHolder> {
 
-    private List<String> urls = Collections.emptyList();
+    private List<SimpleMovieItem> simpleMovieItems = Collections.emptyList();
+    private OnMovieItemClickListener onMovieItemClickListener;
+
+    public void setOnMovieItemClickListener(OnMovieItemClickListener onMovieItemClickListener) {
+        this.onMovieItemClickListener = onMovieItemClickListener;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -27,12 +33,20 @@ public class PosterRecyclerViewAdapter extends RecyclerView.Adapter<PosterRecycl
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Glide.with(holder.posterImageView.getContext()).load(urls.get(position)).into(holder.posterImageView);
+        Glide.with(holder.posterImageView.getContext()).load(simpleMovieItems.get(position).getPoster()).into(holder.posterImageView);
+        holder.posterImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onMovieItemClickListener != null) {
+                    onMovieItemClickListener.onMovieItemClick(simpleMovieItems.get(position).getImdbID());
+                }
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return urls.size();
+        return simpleMovieItems.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -44,8 +58,8 @@ public class PosterRecyclerViewAdapter extends RecyclerView.Adapter<PosterRecycl
         }
     }
 
-    public void setUrls(List<String> urls) {
-        this.urls = urls;
+    public void setSimpleMovieItems(List<SimpleMovieItem> simpleMovieItems) {
+        this.simpleMovieItems = simpleMovieItems;
         notifyDataSetChanged();
     }
 }

@@ -69,10 +69,10 @@ public class DetailActivity extends NucleusAppCompatActivity<DetailPresenter> {
 
     private void success(MovieItem movieItem) {
         Glide.with(this).load(movieItem.getPoster()).into(poster);
-      /* title_and_year.setText(movieItem.getTitle());
+      title_and_year.setText(movieItem.getTitle());
         type.setText(movieItem.getType());
-        actors.setText(movieItem.getActors());
-        plot.setText(movieItem.getPlot());*/
+        actors.setText("Artists : " +movieItem.getActors());
+        plot.setText("Description : " +movieItem.getPlot());
 
     }
 
