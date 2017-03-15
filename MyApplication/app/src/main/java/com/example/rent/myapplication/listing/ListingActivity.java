@@ -1,6 +1,6 @@
 package com.example.rent.myapplication.listing;
 
-import static io.reactivex.android.schedulers.AndroidSchedulers.mainThread;
+
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,9 +22,12 @@ import com.example.rent.myapplication.search.SearchResult;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 import io.reactivex.schedulers.Schedulers;
 import nucleus.factory.RequiresPresenter;
 import nucleus.view.NucleusAppCompatActivity;
+
+import static io.reactivex.android.schedulers.AndroidSchedulers.mainThread;
 
 @RequiresPresenter(ListingPresenter.class)
 public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> implements CurrentItemListener,ShoworHideCounter, OnMovieItemClickListener {
@@ -51,6 +54,7 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
+    private ResultAggregator newAggregatorResult;
 
 
     @Override
@@ -93,10 +97,7 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
     }
 
     private void startLoading(String title, int year, String type) {
-        getPresenter().getDataAsync(1, title, year, type)
-                .subscribeOn(Schedulers.io())
-                .observeOn(mainThread())
-                .subscribe(this::success, this::error);
+        getPresenter().startLoadingItems(title, year, type);
     }
 
     @OnClick(R.id.text_no_internet)
@@ -110,20 +111,20 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
         viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(noInternet));
     }
 
-    public void appendItems(SearchResult searchResult) {
-        adapter.addItems(searchResult.getItems());
-        endlessScrollListener.setTotalItemsNumber(Integer.parseInt(searchResult.getTotalResults()));
+    public void appendItems(ResultAggregator resultAggregator) {
+        adapter.addItems(resultAggregator.getMovieItems());
+        endlessScrollListener.setTotalItemsNumber(resultAggregator.getTotalItemResults());
 
     }
 
-    private void success(SearchResult searchResult) {
+    private void success(ResultAggregator resultAggregator) {
         swipeRefreshLayout.setRefreshing(false);
-        endlessScrollListener.setTotalItemsNumber(Integer.parseInt(searchResult.getTotalResults()));
-        if ("False".equalsIgnoreCase(searchResult.getResposne())) {
+        endlessScrollListener.setTotalItemsNumber(resultAggregator.getTotalItemResults());
+        if ("False".equalsIgnoreCase(resultAggregator.getResponse())) {
             viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(no_results));
         } else {
             viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(swipeRefreshLayout));
-            adapter.setItems(searchResult.getItems());
+            adapter.setItems(resultAggregator.getMovieItems());
         }
     }
 
@@ -171,5 +172,12 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
     @Override
     public void onMovieItemClick(String imdbID){
         startActivity(DetailActivity.createIntent(this,imdbID));
+    }
+
+
+    public void setNewAggregatorResult(ResultAggregator newAggregatorResult) {
+
+               success(newAggregatorResult);
+
     }
 }
